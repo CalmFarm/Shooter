@@ -1,13 +1,22 @@
 using UnityEngine;
-
+using Cinemachine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] LayerMask interactionLayer;
+
+    CinemachineImpulseSource impulseSource;
+
+    private void Awake()
+    {
+        impulseSource = GetComponent<CinemachineImpulseSource>();
+    }
     public void Shoot(WeaponSO weaponSO)
     {
-        RaycastHit hit;
         muzzleFlash.Play();
+        impulseSource.GenerateImpulse();
+
+        RaycastHit hit;
 
         if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, Mathf.Infinity, interactionLayer, QueryTriggerInteraction.Ignore))
         {
